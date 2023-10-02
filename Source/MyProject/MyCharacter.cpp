@@ -21,6 +21,9 @@ AMyCharacter::AMyCharacter()
 	CameraArm->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
+
+	// Sprite initialization
+	/*Sprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Sprite"));*/
 }
 
 // Called when the game starts or when spawned

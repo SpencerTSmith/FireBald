@@ -19,6 +19,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FFloatStatUpdated,
 
 class USpringArmComponent;
 class UCameraComponent;
+class UPaperSpriteComponent;
 
 UCLASS()
 class MYPROJECT_API AMyCharacter : public ACharacter
@@ -86,6 +87,10 @@ private:
 	USpringArmComponent* CameraArm = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* Camera = nullptr;
+
+	//Sprite
+	/*UPROPERTY(VisibleAnywhere, Category = "Sprite")
+	UPaperSpriteComponent* Sprite = nullptr;*/
 
 	// Health
 	static constexpr int BaseHealth = 10;
