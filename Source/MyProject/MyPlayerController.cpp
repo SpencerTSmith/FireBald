@@ -5,12 +5,14 @@
 #include "MyCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Camera/CameraComponent.h"
 #include <Kismet/KismetMathLibrary.h>
 
-//void AMyPlayerController::Tick(float DeltaSeconds)
-//{
-//	this->HandleRotation(DeltaSeconds);
-//}
+void AMyPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	this->HandleRotation(DeltaSeconds);
+}
 
 void AMyPlayerController::OnPossess(APawn* aPawn)
 {
@@ -61,19 +63,23 @@ void AMyPlayerController::OnUnPossess()
 
 void AMyPlayerController::HandleLook(const FInputActionValue& InputActionValue)
 {
-	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
+	/*const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
 	AddYawInput(LookAxisVector.X);
-	AddPitchInput(LookAxisVector.Y);
+	AddPitchInput(LookAxisVector.Y);*/
 }
 
 void AMyPlayerController::HandleMove(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2d>();
-
 	if (PlayerCharacter)
 	{
-		PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector(), MovementVector.Y);
-		PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector(), MovementVector.X);
+		// Relative to player
+		/*PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector(), MovementVector.Y);
+		PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector(), MovementVector.X);*/
+		
+		// Relative to camera
+		PlayerCharacter->AddMovementInput(PlayerCharacter->GetCameraComponent()->GetForwardVector(), MovementVector.Y);
+		PlayerCharacter->AddMovementInput(PlayerCharacter->GetCameraComponent()->GetRightVector(), MovementVector.X);
 	}
 }
 
@@ -83,6 +89,7 @@ void AMyPlayerController::HandleRotation(float DeltaSeconds)
 
 	if (this->DeprojectMousePositionToWorld(MousePosition, MouseDirection))
 	{
+		// My Implementation that doesn't work
 		/*FRotator CurrentCharacterRotation = PlayerCharacter->GetActorRotation();
 		FRotator TargetRotation = MouseDirection.Rotation();
 
@@ -90,6 +97,7 @@ void AMyPlayerController::HandleRotation(float DeltaSeconds)
 
 		PlayerCharacter->SetActorRotation(NewRotation);*/
 		
+		// This implementation works
 		const FVector PlayerLocation = PlayerCharacter->GetActorLocation();
 		
 		FVector MouseDirectionAdjusted = PlayerLocation + (MouseDirection * 1000.f);
@@ -100,11 +108,15 @@ void AMyPlayerController::HandleRotation(float DeltaSeconds)
 			PlayerLocation,
 			FVector{ 0.f, 0.f, 1.f }
 		);
+		// Same z plane
 		EndLocation.Z = PlayerLocation.Z;
 
+		// Rotation between current player location and mouse location
 		FRotator DesiredRotation = UKismetMathLibrary::FindLookAtRotation(PlayerLocation, EndLocation);
+		// Don't rotate these directions
 		DesiredRotation.Roll = 0.f;
 		DesiredRotation.Pitch = 0.f;
+		// Interpolate to smooth
 		FRotator NewRotation = FMath::RInterpTo(GetControlRotation(), DesiredRotation, DeltaSeconds, RotationInterpSpeed);
 
 		SetControlRotation(NewRotation);

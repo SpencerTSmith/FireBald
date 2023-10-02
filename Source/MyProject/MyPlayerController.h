@@ -46,7 +46,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "RotationConfiguration", meta = (AllowPrivateAccess = "true"))
 	float RotationInterpSpeed{ 120.f };
 
-	//virtual void Tick(float DeltaSeconds) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 protected:
 	virtual void OnPossess(APawn* aPawn) override;

@@ -80,6 +80,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player|Magic")
 	void SpellFireball();
 
+	UFUNCTION(BlueprintPure, Category = "Player|Camera")
+	UCameraComponent* GetCameraComponent();
+
 private:
 
 	// Camera

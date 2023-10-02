@@ -149,3 +149,8 @@ void AMyCharacter::SpellFireball()
 	}
 }
 
+UCameraComponent* AMyCharacter::GetCameraComponent()
+{
+	return Camera;
+}
+
