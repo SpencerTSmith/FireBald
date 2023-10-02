@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "ProjectileActor.h"
 
 
 // Sets default values
@@ -131,7 +132,30 @@ void AMyCharacter::SpellStun()
 {
 	if (CurrentStamina >= StunStaminaCost)
 	{
-		// to do
+		if (ProjectileClass) 
+		{
+			FVector PlayerLocation = GetActorLocation();
+			FRotator PlayerRotation = GetActorRotation();
+			
+			// 2D camera space to world space
+			FireFromOffset = PlayerLocation + FTransform(PlayerRotation).TransformVector(FireFromOffset);
+			
+			FRotator FireFromRotation = PlayerRotation;
+
+			UWorld* World = GetWorld();
+			if (World) 
+			{
+				FActorSpawnParameters SpawnParams;
+				SpawnParams.Owner = this;
+				SpawnParams.Instigator = GetInstigator();
+
+				AProjectileActor* StunSpell = World->SpawnActor<AProjectileActor>(ProjectileClass, FireFromOffset, FireFromRotation, SpawnParams);
+				if (StunSpell) 
+				{
+					StunSpell->FireInDirection(FireFromRotation.Vector());
+				}
+			}
+		}
 
 		CurrentStamina -= StunStaminaCost;
 	}

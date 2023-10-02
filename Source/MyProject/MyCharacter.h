@@ -35,7 +35,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class ProjectileActor> ProjectileClass;
+	TSubclassOf<class AProjectileActor> ProjectileClass;
 
 public:	
 	// Called every frame
@@ -86,7 +86,7 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Player|Camera")
 	UCameraComponent* GetCameraComponent();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category "Player|Magic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Magic")
 	FVector FireFromOffset;
 
 private:
