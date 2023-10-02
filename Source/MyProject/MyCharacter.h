@@ -34,6 +34,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class ProjectileActor> ProjectileClass;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -82,6 +85,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Player|Camera")
 	UCameraComponent* GetCameraComponent();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category "Player|Magic")
+	FVector FireFromOffset;
 
 private:
 
