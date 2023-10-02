@@ -82,10 +82,10 @@ public:
 private:
 
 	// Camera
-	/*UPROPERTY(VisibleAnywhere, Category = "Camera")
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	USpringArmComponent* CameraArm = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	UCameraComponent* Camera = nullptr;*/
+	UCameraComponent* Camera = nullptr;
 
 	// Health
 	static constexpr int BaseHealth = 10;

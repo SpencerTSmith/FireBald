@@ -17,10 +17,10 @@ AMyCharacter::AMyCharacter()
 	SetActorTickEnabled(true);
 
 	// Camera initialization
-	/*CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
-	CameraArm->SetupAttachment(GetMesh());
+	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
+	CameraArm->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(CameraArm);*/
+	Camera->SetupAttachment(CameraArm);
 }
 
 // Called when the game starts or when spawned
