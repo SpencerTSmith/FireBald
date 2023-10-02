@@ -121,16 +121,28 @@ void AMyPlayerController::HandleJump()
 
 void AMyPlayerController::HandleSword()
 {
+	if (PlayerCharacter) {
+		PlayerCharacter->AttackSword();
+	}
 }
 
 void AMyPlayerController::HandleStun()
 {
+	if (PlayerCharacter) {
+		PlayerCharacter->SpellStun();
+	}
 }
 
 void AMyPlayerController::HandleFireball()
 {
+	if (PlayerCharacter) {
+		PlayerCharacter->SpellFireball();
+	}
 }
 
 void AMyPlayerController::HandleBlink()
 {
+	if (PlayerCharacter) {
+		PlayerCharacter->SpellBlink ();
+	}
 }

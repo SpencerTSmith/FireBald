@@ -97,9 +97,10 @@ private:
 	static constexpr float BlinkStaminaCost = 1.0f;
 	static constexpr float SwordStaminaCost = 1.0f;
 	static constexpr float FireballStaminaCost = 20.0f;
-	static constexpr float StunStaminaCost = 5.0f;
+	static constexpr float StunStaminaCost = 10.0f;
+	float MaxStamina = BaseStamina;
 	float CurrentStamina = BaseStamina;
-	float StaminaRestorationFactor = 0.5f;
+	float StaminaRestorationFactor = 0.0f;
 
 	// Fireball Charge
 	static constexpr float MaxFireballCharge = 50.0f;

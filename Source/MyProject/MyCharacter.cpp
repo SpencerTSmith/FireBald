@@ -13,6 +13,9 @@ AMyCharacter::AMyCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
+	SetActorTickInterval(0.5f);
+	SetActorTickEnabled(true);
+
 	// Camera initialization
 	/*CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
 	CameraArm->SetupAttachment(GetMesh());
@@ -32,6 +35,18 @@ void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Stamina Regen
+	if (CurrentStamina != MaxStamina) 
+	{
+		const float OldStamina = CurrentStamina;
+
+		CurrentStamina = FMath::Clamp(CurrentStamina + StaminaRestorationFactor, 0, MaxStamina);
+		OnStaminaChanged.Broadcast(OldStamina, CurrentStamina, MaxStamina);
+	}
+
+	// Update temp UI
+	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Red, *(FString::Printf(TEXT("Health - Current: %d | Max: %d"), CurrentHealth, MaxHealth)));
+	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Green, *(FString::Printf(TEXT("Stamina - Current: %f | Max: %f"), CurrentStamina, MaxStamina)));
 }
 
 // Called to bind functionality to input
