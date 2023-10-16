@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "EnemyAIController.h"
 #include "EnemyCharacter.generated.h"
 
 UCLASS()
@@ -18,6 +19,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly, Category = "AI Controller")
+	AEnemyAIController* EnemyAIController;
 
 public:	
 	// Called every frame
