@@ -87,7 +87,7 @@ public:
 	UCameraComponent* GetCameraComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Magic")
-	FVector FireFromOffset;
+	int ProjectileOffset;
 
 private:
 
@@ -114,7 +114,7 @@ private:
 	static constexpr float StunStaminaCost = 10.0f;
 	float MaxStamina = BaseStamina;
 	float CurrentStamina = BaseStamina;
-	float StaminaRestorationFactor = 0.5f;
+	float StaminaRestorationFactor = 20.0f;
 
 	// Fireball Charge
 	static constexpr float MaxFireballCharge = 50.0f;

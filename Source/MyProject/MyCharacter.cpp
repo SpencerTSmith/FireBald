@@ -137,10 +137,8 @@ void AMyCharacter::SpellStun()
 			FVector PlayerLocation = GetActorLocation();
 			FRotator PlayerRotation = GetActorRotation();
 			
-			// 2D camera space to world space
-			FireFromOffset = PlayerLocation + FTransform(PlayerRotation).TransformVector(FireFromOffset);
-			
-			FRotator FireFromRotation = PlayerRotation;
+			// Get an offset to spawn at
+			FVector SpawnLocation = PlayerLocation + (PlayerRotation.Vector() * ProjectileOffset);
 
 			UWorld* World = GetWorld();
 			if (World) 
@@ -149,10 +147,10 @@ void AMyCharacter::SpellStun()
 				SpawnParams.Owner = this;
 				SpawnParams.Instigator = GetInstigator();
 
-				AProjectileActor* StunSpell = World->SpawnActor<AProjectileActor>(ProjectileClass, FireFromOffset, FireFromRotation, SpawnParams);
+				AProjectileActor* StunSpell = World->SpawnActor<AProjectileActor>(ProjectileClass, SpawnLocation, PlayerRotation, SpawnParams);
 				if (StunSpell) 
 				{
-					StunSpell->FireInDirection(FireFromRotation.Vector());
+					StunSpell->FireInDirection(PlayerRotation.Vector());
 				}
 			}
 		}
