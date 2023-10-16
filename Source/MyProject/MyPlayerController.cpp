@@ -51,6 +51,9 @@ void AMyPlayerController::OnPossess(APawn* aPawn)
 		EnhancedInputComponent->BindAction(Fireball, ETriggerEvent::Triggered, this, &AMyPlayerController::HandleFireball);
 	if (Blink)
 		EnhancedInputComponent->BindAction(Blink, ETriggerEvent::Triggered, this, &AMyPlayerController::HandleBlink);
+
+	// Show cursor
+	this->bShowMouseCursor = true;
 }
 
 void AMyPlayerController::OnUnPossess()

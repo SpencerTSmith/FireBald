@@ -137,7 +137,7 @@ void AMyCharacter::SpellStun()
 			FVector PlayerLocation = GetActorLocation();
 			FRotator PlayerRotation = GetActorRotation();
 			
-			// Get an offset to spawn at
+			// Get a location with offset to spawn at
 			FVector SpawnLocation = PlayerLocation + (PlayerRotation.Vector() * ProjectileOffset);
 
 			UWorld* World = GetWorld();
