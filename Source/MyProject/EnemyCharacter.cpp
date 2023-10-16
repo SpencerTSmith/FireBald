@@ -16,6 +16,8 @@ void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	EnemyAIController = GetWorld()->SpawnActor<AEnemyAIController>();
+	EnemyAIController->Possess(this);
 }
 
 // Called every frame

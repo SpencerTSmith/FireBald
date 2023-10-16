@@ -12,7 +12,7 @@
 /**
  * 
  */
-UCLASS(Abstract)
+UCLASS()
 class MYPROJECT_API AEnemyAIController : public AAIController
 {
 	GENERATED_BODY()

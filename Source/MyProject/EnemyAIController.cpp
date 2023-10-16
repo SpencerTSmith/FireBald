@@ -15,7 +15,7 @@ AEnemyAIController::AEnemyAIController()
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
 	DetectingComponent->ConfigureSense(*SightConfig);
 
-	DetectingComponent->OnPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnPlayerDetected);
+	//DetectingComponent->OnPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnPlayerDetected);
 }
 
 void AEnemyAIController::OnPlayerDetected(const TArray<AActor*>& DetectedActors)
@@ -27,8 +27,8 @@ void AEnemyAIController::OnPlayerDetected(const TArray<AActor*>& DetectedActors)
 			AMyCharacter* Player = Cast<AMyCharacter>(DetectedActor);
 			float AcceptanceRadius = 1.0f;
 				
-			if (Player)
-				MoveToLocation(Player->GetActorLocation(), AcceptanceRadius);
+			/*if (Player)
+				MoveToLocation(Player->GetActorLocation(), AcceptanceRadius);*/
 		}
 	}
 }
