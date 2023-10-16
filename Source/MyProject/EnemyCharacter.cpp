@@ -16,8 +16,9 @@ void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	EnemyAIController = GetWorld()->SpawnActor<AEnemyAIController>();
-	EnemyAIController->Possess(this);
+	// If we want to use c++ class as controller as opposed to child blueprint
+	/*EnemyAIController = GetWorld()->SpawnActor<AEnemyAIController>();
+	EnemyAIController->Possess(this);*/
 }
 
 // Called every frame
