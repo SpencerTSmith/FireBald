@@ -26,17 +26,17 @@ void AMyPlayerController::OnPossess(APawn* aPawn)
 	EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	checkf(EnhancedInputComponent, TEXT("Can't reference EnhancedInputComponent"));
 
-	//Get local player subsystem
+	// Get local player subsystem
 	UEnhancedInputLocalPlayerSubsystem* InputSubsystem =
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	checkf(InputSubsystem, TEXT("Can't get ref to EnhancedInputLocalPlayerSubsystem"));
 
-	//Wipe existing mappings, and add our mapping.
+	// Wipe existing mappings, and add our mapping.
 	checkf(InputMappingContext, TEXT("InputMappingContext was not specified."));
 	InputSubsystem->ClearAllMappings();
 	InputSubsystem->AddMappingContext(InputMappingContext, 0);
 
-	//Bind actions
+	// Bind actions
 	if (Move)
 		EnhancedInputComponent->BindAction(Move, ETriggerEvent::Triggered, this, &AMyPlayerController::HandleMove);
 	if (Look)
