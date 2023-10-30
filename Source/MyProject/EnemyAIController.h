@@ -32,4 +32,5 @@ protected:
 	void OnPlayerDetected(const TArray<AActor*>& DetectedActors);
 
 private:
+
 };

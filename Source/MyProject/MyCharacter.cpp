@@ -113,7 +113,28 @@ void AMyCharacter::AttackSword()
 	if (CurrentStamina >= SwordStaminaCost)
 	{
 		// to do
+		if (SwordClass)
+		{
+			FVector PlayerLocation = GetActorLocation();
+			FRotator PlayerRotation = GetActorRotation();
 
+			// Get a location with offset to spawn at
+			FVector SpawnLocation = PlayerLocation + (PlayerRotation.Vector() * ProjectileOffset);
+
+			UWorld* World = GetWorld();
+			if (World)
+			{
+				FActorSpawnParameters SpawnParams;
+				SpawnParams.Owner = this;
+				SpawnParams.Instigator = GetInstigator();
+
+				AProjectileActor* SwordAttack = World->SpawnActor<AProjectileActor>(SwordClass, SpawnLocation, PlayerRotation, SpawnParams);
+				if (SwordAttack)
+				{
+					SwordAttack->FireInDirection(PlayerRotation.Vector());
+				}
+			}
+		}
 		CurrentStamina -= SwordStaminaCost;
 	}
 }
@@ -132,7 +153,7 @@ void AMyCharacter::SpellStun()
 {
 	if (CurrentStamina >= StunStaminaCost)
 	{
-		if (ProjectileClass) 
+		if (StunClass) 
 		{
 			FVector PlayerLocation = GetActorLocation();
 			FRotator PlayerRotation = GetActorRotation();
@@ -147,7 +168,7 @@ void AMyCharacter::SpellStun()
 				SpawnParams.Owner = this;
 				SpawnParams.Instigator = GetInstigator();
 
-				AProjectileActor* StunSpell = World->SpawnActor<AProjectileActor>(ProjectileClass, SpawnLocation, PlayerRotation, SpawnParams);
+				AProjectileActor* StunSpell = World->SpawnActor<AProjectileActor>(StunClass, SpawnLocation, PlayerRotation, SpawnParams);
 				if (StunSpell) 
 				{
 					StunSpell->FireInDirection(PlayerRotation.Vector());

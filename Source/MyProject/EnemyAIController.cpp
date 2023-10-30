@@ -4,6 +4,7 @@
 #include "EnemyAIController.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "MyCharacter.h"
+#include <Kismet/GameplayStatics.h>
 
 AEnemyAIController::AEnemyAIController()
 {
@@ -15,6 +16,7 @@ AEnemyAIController::AEnemyAIController()
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
 	DetectingComponent->ConfigureSense(*SightConfig);
 
+	// If we want to have it based on sight, probably not for this game though
 	DetectingComponent->OnPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnPlayerDetected);
 }
 
@@ -32,3 +34,4 @@ void AEnemyAIController::OnPlayerDetected(const TArray<AActor*>& DetectedActors)
 		}
 	}
 }
+

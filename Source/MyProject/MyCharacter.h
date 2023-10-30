@@ -35,7 +35,13 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class AProjectileActor> ProjectileClass;
+	TSubclassOf<class AProjectileActor> StunClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AProjectileActor> SwordClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AProjectileActor> FireballClass;
 
 public:	
 	// Called every frame
