@@ -23,8 +23,6 @@ AMyCharacter::AMyCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
 
-	// Sprite initialization
-	/*Sprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Sprite"));*/
 }
 
 // Called when the game starts or when spawned
@@ -51,6 +49,8 @@ void AMyCharacter::Tick(float DeltaTime)
 	// Update temp UI
 	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Red, *(FString::Printf(TEXT("Health - Current: %d | Max: %d"), CurrentHealth, MaxHealth)));
 	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Green, *(FString::Printf(TEXT("Stamina - Current: %f | Max: %f"), CurrentStamina, MaxStamina)));
+	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Orange, *(FString::Printf(TEXT("Charge - Current: %f | Max: %f"), CurrentFireballCharge, MaxFireballCharge)));
+
 }
 
 // Called to bind functionality to input
@@ -106,6 +106,11 @@ float AMyCharacter::GetStamina()
 float AMyCharacter::GetStaminaRestorationFactor()
 {
 	return StaminaRestorationFactor;
+}
+
+bool AMyCharacter::CanMove()
+{
+	return bCanMove;
 }
 
 void AMyCharacter::AttackSword()
@@ -183,6 +188,18 @@ void AMyCharacter::SpellStun()
 
 void AMyCharacter::SpellFireball()
 {
+	if (CurrentFireballCharge < MaxFireballCharge)
+	{
+		// Can't move while charging
+		bCanMove = false;
+
+		const float OldFireballCharge = CurrentFireballCharge;
+
+		CurrentFireballCharge = FMath::Clamp(CurrentFireballCharge + DeltaFireballCharge, 0, MaxFireballCharge);
+		OnStaminaChanged.Broadcast(OldFireballCharge, CurrentFireballCharge, MaxFireballCharge);
+
+		bCanMove = true;
+	}
 	if (CurrentStamina >= FireballStaminaCost && CurrentFireballCharge == MaxFireballCharge)
 	{
 		// to do

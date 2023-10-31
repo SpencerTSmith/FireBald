@@ -74,7 +74,7 @@ void AMyPlayerController::HandleLook(const FInputActionValue& InputActionValue)
 void AMyPlayerController::HandleMove(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2d>();
-	if (PlayerCharacter)
+	if (PlayerCharacter && PlayerCharacter->CanMove())
 	{
 		// Relative to player
 		/*PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector(), MovementVector.Y);

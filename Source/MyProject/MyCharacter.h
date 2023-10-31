@@ -74,6 +74,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Player|Stamina")
 	float GetStaminaRestorationFactor();
 
+	UFUNCTION(BlueprintCallable, Category = "Movment")
+	bool CanMove();
+
 	UPROPERTY(BlueprintAssignable, Category = "Player|Stamina")
 	FFloatStatUpdated OnStaminaChanged;
 
@@ -89,6 +92,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player|Magic")
 	void SpellFireball();
 
+	UPROPERTY(BlueprintAssignable, Category = "Player|Magic")
+	FFloatStatUpdated OnFireballChargeChanged;
+
 	UFUNCTION(BlueprintPure, Category = "Player|Camera")
 	UCameraComponent* GetCameraComponent();
 
@@ -103,10 +109,6 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* Camera = nullptr;
 
-	//Sprite
-	/*UPROPERTY(VisibleAnywhere, Category = "Sprite")
-	UPaperSpriteComponent* Sprite = nullptr;*/
-
 	// Health
 	static constexpr int BaseHealth = 10;
 	int MaxHealth = BaseHealth;
@@ -120,13 +122,16 @@ private:
 	static constexpr float StunStaminaCost = 10.0f;
 	float MaxStamina = BaseStamina;
 	float CurrentStamina = BaseStamina;
-	float StaminaRestorationFactor = 20.0f;
+	float StaminaRestorationFactor = 1.5f;
 
 	// Fireball Charge
 	static constexpr float MaxFireballCharge = 50.0f;
 	static constexpr float StartingFireballCharge = 0.0f;
-	static constexpr float DeltaFireballCharge = 5.0f;
+	static constexpr float DeltaFireballCharge = 0.5f;
 	float CurrentFireballCharge = StartingFireballCharge;
+
+	// Can move variable so player can't move while doing some actions
+	bool bCanMove = true;
 
 	GENERATED_BODY()
 };
