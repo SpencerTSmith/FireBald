@@ -34,13 +34,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
 	TSubclassOf<class AProjectileActor> StunClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Sword")
 	TSubclassOf<class AProjectileActor> SwordClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
 	TSubclassOf<class AProjectileActor> FireballClass;
 
 public:	
@@ -79,6 +79,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Player|Sword")
 	void AttackSword();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Magic")
+	int SwordOffset;
 
 	UFUNCTION(BlueprintCallable, Category = "Player|Magic")
 	void SpellBlink();
@@ -126,6 +129,9 @@ private:
 	static constexpr float StartingFireballCharge = 0.0f;
 	static constexpr float DeltaFireballCharge = 5.0f;
 	float CurrentFireballCharge = StartingFireballCharge;
+
+	// Projectile Helper
+	void FireProjectile(TSubclassOf<class AProjectileActor> Projectile, int Offset);
 
 	GENERATED_BODY()
 };

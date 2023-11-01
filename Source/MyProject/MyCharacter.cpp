@@ -114,29 +114,7 @@ void AMyCharacter::AttackSword()
 {
 	if (CurrentStamina >= SwordStaminaCost)
 	{
-		// to do
-		if (SwordClass)
-		{
-			FVector PlayerLocation = GetActorLocation();
-			FRotator PlayerRotation = GetActorRotation();
-
-			// Get a location with offset to spawn at
-			FVector SpawnLocation = PlayerLocation + (PlayerRotation.Vector() * ProjectileOffset);
-
-			UWorld* World = GetWorld();
-			if (World)
-			{
-				FActorSpawnParameters SpawnParams;
-				SpawnParams.Owner = this;
-				SpawnParams.Instigator = GetInstigator();
-
-				AProjectileActor* SwordAttack = World->SpawnActor<AProjectileActor>(SwordClass, SpawnLocation, PlayerRotation, SpawnParams);
-				if (SwordAttack)
-				{
-					SwordAttack->FireInDirection(PlayerRotation.Vector());
-				}
-			}
-		}
+		FireProjectile(SwordClass, SwordOffset);
 		CurrentStamina -= SwordStaminaCost;
 	}
 }
@@ -155,29 +133,7 @@ void AMyCharacter::SpellStun()
 {
 	if (CurrentStamina >= StunStaminaCost)
 	{
-		if (StunClass) 
-		{
-			FVector PlayerLocation = GetActorLocation();
-			FRotator PlayerRotation = GetActorRotation();
-			
-			// Get a location with offset to spawn at
-			FVector SpawnLocation = PlayerLocation + (PlayerRotation.Vector() * ProjectileOffset);
-
-			UWorld* World = GetWorld();
-			if (World) 
-			{
-				FActorSpawnParameters SpawnParams;
-				SpawnParams.Owner = this;
-				SpawnParams.Instigator = GetInstigator();
-
-				AProjectileActor* StunSpell = World->SpawnActor<AProjectileActor>(StunClass, SpawnLocation, PlayerRotation, SpawnParams);
-				if (StunSpell) 
-				{
-					StunSpell->FireInDirection(PlayerRotation.Vector());
-				}
-			}
-		}
-
+		FireProjectile(StunClass, ProjectileOffset);
 		CurrentStamina -= StunStaminaCost;
 	}
 	
@@ -197,8 +153,7 @@ void AMyCharacter::SpellFireball()
 	}
 	if (CurrentStamina >= FireballStaminaCost && CurrentFireballCharge == MaxFireballCharge)
 	{
-		// to do
-
+		FireProjectile(FireballClass, ProjectileOffset);
 		CurrentStamina -= FireballStaminaCost;
 		CurrentFireballCharge = 0.0f;
 	}
@@ -207,5 +162,31 @@ void AMyCharacter::SpellFireball()
 UCameraComponent* AMyCharacter::GetCameraComponent()
 {
 	return Camera;
+}
+
+void AMyCharacter::FireProjectile(TSubclassOf<class AProjectileActor> ProjectileClass, int Offset)
+{
+	if (ProjectileClass)
+	{
+		FVector PlayerLocation = GetActorLocation();
+		FRotator PlayerRotation = GetActorRotation();
+
+		// Get a location with offset to spawn at
+		FVector SpawnLocation = PlayerLocation + (PlayerRotation.Vector() * Offset);
+
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.Owner = this;
+			SpawnParams.Instigator = GetInstigator();
+
+			AProjectileActor* Projectile = World->SpawnActor<AProjectileActor>(ProjectileClass, SpawnLocation, PlayerRotation, SpawnParams);
+			if (Projectile)
+			{
+				Projectile->FireInDirection(PlayerRotation.Vector());
+			}
+		}
+	}
 }
 
