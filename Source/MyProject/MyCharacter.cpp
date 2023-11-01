@@ -92,6 +92,7 @@ void AMyCharacter::UpdateHealth(int DeltaHealth)
 	if (CurrentHealth <= 0.0f) 
 	{
 		// Death screen
+		Destroy();
 	}
 }
 
@@ -141,17 +142,16 @@ void AMyCharacter::SpellStun()
 
 void AMyCharacter::SpellFireball()
 {
+	// Can't move while charging
 	if (CurrentFireballCharge < MaxFireballCharge && GetVelocity() == FVector(0))
 	{
-		// Can't move while charging
-
 		const float OldFireballCharge = CurrentFireballCharge;
 
 		CurrentFireballCharge = FMath::Clamp(CurrentFireballCharge + DeltaFireballCharge, 0, MaxFireballCharge);
 		OnStaminaChanged.Broadcast(OldFireballCharge, CurrentFireballCharge, MaxFireballCharge);
 
 	}
-	if (CurrentStamina >= FireballStaminaCost && CurrentFireballCharge == MaxFireballCharge)
+	else if (CurrentStamina >= FireballStaminaCost && CurrentFireballCharge == MaxFireballCharge)
 	{
 		FireProjectile(FireballClass, ProjectileOffset);
 		CurrentStamina -= FireballStaminaCost;
