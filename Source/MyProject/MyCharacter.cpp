@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "ProjectileActor.h"
+#include "GameFramework/Character.h"
+
 
 
 // Sets default values
@@ -108,11 +110,6 @@ float AMyCharacter::GetStaminaRestorationFactor()
 	return StaminaRestorationFactor;
 }
 
-bool AMyCharacter::CanMove()
-{
-	return bCanMove;
-}
-
 void AMyCharacter::AttackSword()
 {
 	if (CurrentStamina >= SwordStaminaCost)
@@ -188,17 +185,15 @@ void AMyCharacter::SpellStun()
 
 void AMyCharacter::SpellFireball()
 {
-	if (CurrentFireballCharge < MaxFireballCharge)
+	if (CurrentFireballCharge < MaxFireballCharge && GetVelocity() == FVector(0))
 	{
 		// Can't move while charging
-		bCanMove = false;
 
 		const float OldFireballCharge = CurrentFireballCharge;
 
 		CurrentFireballCharge = FMath::Clamp(CurrentFireballCharge + DeltaFireballCharge, 0, MaxFireballCharge);
 		OnStaminaChanged.Broadcast(OldFireballCharge, CurrentFireballCharge, MaxFireballCharge);
 
-		bCanMove = true;
 	}
 	if (CurrentStamina >= FireballStaminaCost && CurrentFireballCharge == MaxFireballCharge)
 	{
