@@ -117,7 +117,7 @@ private:
 	// Stamina
 	static constexpr float BaseStamina = 20.0f;
 	static constexpr float BlinkStaminaCost = 1.0f;
-	static constexpr float SwordStaminaCost = 3.0f;
+	static constexpr float SwordStaminaCost = 5.0f;
 	static constexpr float FireballStaminaCost = 20.0f;
 	static constexpr float StunStaminaCost = 10.0f;
 	float MaxStamina = BaseStamina;
@@ -128,7 +128,7 @@ private:
 	static constexpr float MaxFireballCharge = 50.0f;
 	static constexpr float StartingFireballCharge = 0.0f;
 	static constexpr float DeltaFireballCharge = 5.0f;
-	static constexpr float FireballChargeDecay = 0.5;
+	static constexpr float FireballChargeDecay = 0.05;
 	float CurrentFireballCharge = StartingFireballCharge;
 
 	// Projectile Helper

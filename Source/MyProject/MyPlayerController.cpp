@@ -130,7 +130,7 @@ void AMyPlayerController::HandleJump()
 {
 	if (PlayerCharacter)
 	{
-		PlayerCharacter->Jump();
+		//PlayerCharacter->Jump();
 	}
 }
 
