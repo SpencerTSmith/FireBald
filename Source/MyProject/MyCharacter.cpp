@@ -48,6 +48,15 @@ void AMyCharacter::Tick(float DeltaTime)
 		OnStaminaChanged.Broadcast(OldStamina, CurrentStamina, MaxStamina);
 	}
 
+	// Fireball Charge Decay
+	if (CurrentFireballCharge != 0)
+	{
+		const float OldFireballCharge = CurrentFireballCharge;
+
+		CurrentFireballCharge = FMath::Clamp(CurrentFireballCharge - FireballChargeDecay, 0, MaxFireballCharge);
+		OnFireballChargeChanged.Broadcast(OldFireballCharge, CurrentFireballCharge, MaxFireballCharge);
+	}
+
 	// Update temp UI
 	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Red, *(FString::Printf(TEXT("Health - Current: %d | Max: %d"), CurrentHealth, MaxHealth)));
 	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Green, *(FString::Printf(TEXT("Stamina - Current: %f | Max: %f"), CurrentStamina, MaxStamina)));

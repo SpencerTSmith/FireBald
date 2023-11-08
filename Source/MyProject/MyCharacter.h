@@ -128,6 +128,7 @@ private:
 	static constexpr float MaxFireballCharge = 50.0f;
 	static constexpr float StartingFireballCharge = 0.0f;
 	static constexpr float DeltaFireballCharge = 5.0f;
+	static constexpr float FireballChargeDecay = 0.5;
 	float CurrentFireballCharge = StartingFireballCharge;
 
 	// Projectile Helper
