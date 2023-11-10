@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "PaperFlipBookComponent.h"
 #include "MyCharacter.generated.h"
+
 
 // Delegate for player death
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerIsDead);
@@ -17,9 +20,31 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FIntStatUpdated,
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FFloatStatUpdated,
 	float, OldValue, float, NewValue, float, MaxValue);
 
-class USpringArmComponent;
-class UCameraComponent;
-class UPaperSpriteComponent;
+UENUM(BlueprintType, Category = "Animation")
+enum class EAnimationDirection : uint8
+{
+	Left,
+	Right
+};
+
+USTRUCT(BlueprintType, Category = "Animation")
+struct FAnimationFlipbooks
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* IdleRight{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* IdleLeft{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* RunRight{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* RunLeft{ nullptr };
+
+};
 
 UCLASS()
 class MYPROJECT_API AMyCharacter : public ACharacter
@@ -43,13 +68,40 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
 	TSubclassOf<class AProjectileActor> FireballClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Magic")
+	int ProjectileOffset;
+
+	// Camera
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	USpringArmComponent* CameraArm = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	UCameraComponent* Camera = nullptr;
+
+	// Animation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Animation")
+	UPaperFlipbookComponent* FlipbookComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Animation")
+	EAnimationDirection CurrentAnimationDirection;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Animation")
+	FAnimationFlipbooks Flipbooks;
+
+	UFUNCTION(BluePrintCallable, Category = "Player|Animation")
+	void SetCurrentAnimationDirection(FVector const& Velocity);
+
+	UFUNCTION(BlueprintCallable, Category = "Player|Animation")
+	void Animate(float DeltaTime, FVector OldLocation, FVector const OldVelocity);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animation|Config")
+	bool isMoving;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 
 	UFUNCTION(BlueprintPure, Category="Player|Health")
 	int GetHealth();
@@ -78,6 +130,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Player|Stamina")
 	FFloatStatUpdated OnStaminaChanged;
 
+	UPROPERTY(BlueprintAssignable, Category = "Player|Magic")
+	FFloatStatUpdated OnFireballChargeChanged;
+
+	UFUNCTION(BlueprintPure, Category = "Player|Camera")
+	UCameraComponent* GetCameraComponent();
+
 	UFUNCTION(BlueprintCallable, Category = "Player|Sword")
 	void AttackSword();
 
@@ -93,22 +151,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player|Magic")
 	void SpellFireball();
 
-	UPROPERTY(BlueprintAssignable, Category = "Player|Magic")
-	FFloatStatUpdated OnFireballChargeChanged;
-
-	UFUNCTION(BlueprintPure, Category = "Player|Camera")
-	UCameraComponent* GetCameraComponent();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Magic")
-	int ProjectileOffset;
-
 private:
-
-	// Camera
-	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	USpringArmComponent* CameraArm = nullptr;
-	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	UCameraComponent* Camera = nullptr;
 
 	// Health
 	static constexpr int BaseHealth = 30;

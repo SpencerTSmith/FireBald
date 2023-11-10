@@ -7,7 +7,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "ProjectileActor.h"
 #include "GameFramework/Character.h"
-
+#include "PaperFlipbook.h"
 
 
 // Sets default values
@@ -25,13 +25,69 @@ AMyCharacter::AMyCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
 
+	// Flipbook Initialization
+	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Flipbook Component"));
+	FlipbookComponent->SetupAttachment(RootComponent);
+
+	OnCharacterMovementUpdated.AddDynamic(this, &AMyCharacter::Animate);
+
+	isMoving = false;
 }
 
 // Called when the game starts or when spawned
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+}
+
+void AMyCharacter::SetCurrentAnimationDirection(FVector const& Velocity)
+{
+	const float x = Velocity.GetSafeNormal().X;
+	const float y = Velocity.GetSafeNormal().Y;
+
+	isMoving = x != 0.0f || y != 0.0f;
+
+	if (isMoving)
+	{
+		if (x > 0.0f && (y < 0.0f || y == 0.0f)) 
+		{
+			CurrentAnimationDirection = EAnimationDirection::Right;
+		}
+		else
+		{
+			CurrentAnimationDirection = EAnimationDirection::Left;
+		}
+	}
+}
+
+void AMyCharacter::Animate(float DeltaTime, FVector OldLocation, FVector const OldVelocity)
+{
+	SetCurrentAnimationDirection(OldVelocity);
+
+	if (OldVelocity.Size() > 0.0f)
+	{
+		switch (CurrentAnimationDirection)
+		{
+		case EAnimationDirection::Left:
+			FlipbookComponent->SetFlipbook(Flipbooks.RunLeft);
+			break;
+		case EAnimationDirection::Right:
+			FlipbookComponent->SetFlipbook(Flipbooks.RunRight);
+			break;
+		}
+	}
+	else 
+	{
+		switch (CurrentAnimationDirection)
+		{
+		case EAnimationDirection::Left:
+			FlipbookComponent->SetFlipbook(Flipbooks.IdleLeft);
+			break;
+		case EAnimationDirection::Right:
+			FlipbookComponent->SetFlipbook(Flipbooks.IdleRight);
+			break;
+		}
+	}
 }
 
 // Called every frame
@@ -101,7 +157,6 @@ void AMyCharacter::UpdateHealth(int DeltaHealth)
 	if (CurrentHealth <= 0.0f) 
 	{
 		// Death screen
-		Destroy();
 	}
 }
 
