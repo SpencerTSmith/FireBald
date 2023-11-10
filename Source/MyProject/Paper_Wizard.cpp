@@ -1,23 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MyCharacter.h"
+#include "Paper_Wizard.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "ProjectileActor.h"
 #include "GameFramework/Character.h"
+#include "PaperFlipBookComponent.h"
 #include "PaperFlipbook.h"
 
 
 // Sets default values
-AMyCharacter::AMyCharacter()
+APaper_Wizard::APaper_Wizard()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-	
 	SetActorTickInterval(0.5f);
-	SetActorTickEnabled(true);
 
 	// Camera initialization
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
@@ -25,31 +22,37 @@ AMyCharacter::AMyCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
 
-	// Flipbook Initialization
-	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Flipbook Component"));
-	FlipbookComponent->SetupAttachment(RootComponent);
-
-	OnCharacterMovementUpdated.AddDynamic(this, &AMyCharacter::Animate);
+	
 
 	isMoving = false;
+
+
 }
+
+
 
 // Called when the game starts or when spawned
-void AMyCharacter::BeginPlay()
+void APaper_Wizard::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetSprite()->SetFlipbook(RunLeft);
 }
 
-void AMyCharacter::SetCurrentAnimationDirection(FVector const& Velocity)
-{
-	const float x = Velocity.GetSafeNormal().X;
-	const float y = Velocity.GetSafeNormal().Y;
 
-	isMoving = x != 0.0f || y != 0.0f;
+void APaper_Wizard::SetCurrentAnimationDirection(const FVector& Velocity)
+{
+	FVector Forward = GetActorForwardVector().GetSafeNormal();
+	FVector Right = GetActorRightVector().GetSafeNormal();
+
+	const float ForwardSpeed = FMath::Floor(FVector::DotProduct(Velocity.GetSafeNormal(), Forward) * 100) / 100;
+	const float RightSpeed = FMath::Floor(FVector::DotProduct(Velocity.GetSafeNormal(), Right) * 100) / 100;
+
+	isMoving = ForwardSpeed != 0.0f || RightSpeed != 0.0f;
 
 	if (isMoving)
 	{
-		if (x > 0.0f && (y < 0.0f || y == 0.0f)) 
+		if (ForwardSpeed > 0.0f && (RightSpeed < 0.0f || RightSpeed == 0.0f))
 		{
 			CurrentAnimationDirection = EAnimationDirection::Right;
 		}
@@ -60,43 +63,43 @@ void AMyCharacter::SetCurrentAnimationDirection(FVector const& Velocity)
 	}
 }
 
-void AMyCharacter::Animate(float DeltaTime, FVector OldLocation, FVector const OldVelocity)
+void APaper_Wizard::Animate(float DeltaTime, FVector OldLocation, FVector OldVelocity)
 {
 	SetCurrentAnimationDirection(OldVelocity);
 
-	if (OldVelocity.Size() > 0.0f)
+	if (isMoving)
 	{
 		switch (CurrentAnimationDirection)
 		{
 		case EAnimationDirection::Left:
-			FlipbookComponent->SetFlipbook(Flipbooks.RunLeft);
+			GetSprite()->SetFlipbook(Flipbooks.RunLeft);
 			break;
 		case EAnimationDirection::Right:
-			FlipbookComponent->SetFlipbook(Flipbooks.RunRight);
+			GetSprite()->SetFlipbook(Flipbooks.RunRight);
 			break;
 		}
 	}
-	else 
+	else
 	{
 		switch (CurrentAnimationDirection)
 		{
 		case EAnimationDirection::Left:
-			FlipbookComponent->SetFlipbook(Flipbooks.IdleLeft);
+			GetSprite()->SetFlipbook(Flipbooks.IdleLeft);
 			break;
 		case EAnimationDirection::Right:
-			FlipbookComponent->SetFlipbook(Flipbooks.IdleRight);
+			GetSprite()->SetFlipbook(Flipbooks.IdleRight);
 			break;
 		}
 	}
 }
 
 // Called every frame
-void AMyCharacter::Tick(float DeltaTime)
+void APaper_Wizard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 	// Stamina Regen
-	if (CurrentStamina != MaxStamina) 
+	if (CurrentStamina != MaxStamina)
 	{
 		const float OldStamina = CurrentStamina;
 
@@ -121,27 +124,27 @@ void AMyCharacter::Tick(float DeltaTime)
 }
 
 // Called to bind functionality to input
-void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void APaper_Wizard::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
 
-int AMyCharacter::GetHealth()
+int APaper_Wizard::GetHealth()
 {
 	return CurrentHealth;
 }
 
-int AMyCharacter::GetMaxHealth()
+int APaper_Wizard::GetMaxHealth()
 {
 	return MaxHealth;
 }
 
-void AMyCharacter::UpdateHealth(int DeltaHealth)
+void APaper_Wizard::UpdateHealth(int DeltaHealth)
 {
 	if (CurrentHealth <= 0.0f)
 		return;
-	
+
 	int OldHealth = CurrentHealth;
 
 	CurrentHealth += DeltaHealth;
@@ -149,33 +152,33 @@ void AMyCharacter::UpdateHealth(int DeltaHealth)
 	// Make sure health makes sense
 	CurrentHealth = FMath::Clamp(CurrentHealth, -1.f, MaxHealth);
 
-	if (OldHealth != CurrentHealth) 
+	if (OldHealth != CurrentHealth)
 	{
 		OnHealthChanged.Broadcast(OldHealth, CurrentHealth, MaxHealth);
 	}
 
-	if (CurrentHealth <= 0.0f) 
+	if (CurrentHealth <= 0.0f)
 	{
 		// Death screen
 	}
 }
 
-void AMyCharacter::RestoreToMaxHealth()
+void APaper_Wizard::RestoreToMaxHealth()
 {
 	CurrentHealth = MaxHealth;
 }
 
-float AMyCharacter::GetStamina()
+float APaper_Wizard::GetStamina()
 {
 	return CurrentStamina;
 }
 
-float AMyCharacter::GetStaminaRestorationFactor()
+float APaper_Wizard::GetStaminaRestorationFactor()
 {
 	return StaminaRestorationFactor;
 }
 
-void AMyCharacter::AttackSword()
+void APaper_Wizard::AttackSword()
 {
 	if (CurrentStamina >= SwordStaminaCost)
 	{
@@ -184,7 +187,7 @@ void AMyCharacter::AttackSword()
 	}
 }
 
-void AMyCharacter::SpellBlink()
+void APaper_Wizard::SpellBlink()
 {
 	if (CurrentStamina >= BlinkStaminaCost)
 	{
@@ -194,17 +197,17 @@ void AMyCharacter::SpellBlink()
 	}
 }
 
-void AMyCharacter::SpellStun()
+void APaper_Wizard::SpellStun()
 {
 	if (CurrentStamina >= StunStaminaCost)
 	{
 		FireProjectile(StunClass, ProjectileOffset);
 		CurrentStamina -= StunStaminaCost;
 	}
-	
+
 }
 
-void AMyCharacter::SpellFireball()
+void APaper_Wizard::SpellFireball()
 {
 	// Can't move while charging
 	if (CurrentFireballCharge < MaxFireballCharge && GetVelocity() == FVector(0))
@@ -223,12 +226,12 @@ void AMyCharacter::SpellFireball()
 	}
 }
 
-UCameraComponent* AMyCharacter::GetCameraComponent()
+UCameraComponent* APaper_Wizard::GetCameraComponent()
 {
 	return Camera;
 }
 
-void AMyCharacter::FireProjectile(TSubclassOf<class AProjectileActor> ProjectileClass, int Offset)
+void APaper_Wizard::FireProjectile(TSubclassOf<class AProjectileActor> ProjectileClass, int Offset)
 {
 	if (ProjectileClass)
 	{
@@ -253,4 +256,3 @@ void AMyCharacter::FireProjectile(TSubclassOf<class AProjectileActor> Projectile
 		}
 	}
 }
-

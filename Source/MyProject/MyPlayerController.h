@@ -6,10 +6,10 @@
 #include "GameFramework/PlayerController.h"
 #include <Components/InputComponent.h>
 #include <EnhancedInputLibrary.h>
+#include "Paper_Wizard.h"
 #include "MyPlayerController.generated.h"
 
 
-class AMyCharacter;
 /**
  * 
  */
@@ -68,7 +68,7 @@ private:
 	UEnhancedInputComponent* EnhancedInputComponent = nullptr;
 
 	//Store a ref to pawn we are controlling
-	AMyCharacter* PlayerCharacter = nullptr;
+	APaper_Wizard* PlayerCharacter = nullptr;
 
 	GENERATED_BODY()
 };

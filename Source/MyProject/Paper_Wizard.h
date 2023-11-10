@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "PaperCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "PaperFlipBookComponent.h"
-#include "MyCharacter.generated.h"
-
+#include "Paperflipbook.h"
+#include "Paper_Wizard.generated.h"
 
 // Delegate for player death
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerIsDead);
@@ -46,14 +45,15 @@ struct FAnimationFlipbooks
 
 };
 
+/**
+ * 
+ */
 UCLASS()
-class MYPROJECT_API AMyCharacter : public ACharacter
+class MYPROJECT_API APaper_Wizard : public APaperCharacter
 {
-	
-
 public:
 	// Sets default values for this character's properties
-	AMyCharacter();
+	APaper_Wizard();
 
 protected:
 	// Called when the game starts or when spawned
@@ -78,9 +78,6 @@ protected:
 	UCameraComponent* Camera = nullptr;
 
 	// Animation
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Animation")
-	UPaperFlipbookComponent* FlipbookComponent = nullptr;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Animation")
 	EAnimationDirection CurrentAnimationDirection;
 
@@ -88,22 +85,25 @@ protected:
 	FAnimationFlipbooks Flipbooks;
 
 	UFUNCTION(BluePrintCallable, Category = "Player|Animation")
-	void SetCurrentAnimationDirection(FVector const& Velocity);
+	void SetCurrentAnimationDirection(const FVector& Velocity);
 
 	UFUNCTION(BlueprintCallable, Category = "Player|Animation")
-	void Animate(float DeltaTime, FVector OldLocation, FVector const OldVelocity);
+	void Animate(float DeltaTime, FVector OldLocation, FVector OldVelocity);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* RunLeft;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animation|Config")
 	bool isMoving;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintPure, Category="Player|Health")
+	UFUNCTION(BlueprintPure, Category = "Player|Health")
 	int GetHealth();
 
 	UFUNCTION(BlueprintPure, Category = "Player|Health")

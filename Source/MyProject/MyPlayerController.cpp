@@ -2,7 +2,7 @@
 
 
 #include "MyPlayerController.h"
-#include "MyCharacter.h"
+#include "Paper_Wizard.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
@@ -19,7 +19,7 @@ void AMyPlayerController::OnPossess(APawn* aPawn)
 	Super::OnPossess(aPawn);
 
 	// Store a ref to player's pawn
-	PlayerCharacter = Cast<AMyCharacter>(aPawn);
+	PlayerCharacter = Cast<APaper_Wizard>(aPawn);
 	checkf(PlayerCharacter, TEXT("AMyPlayerController derived classes should only possess AMyCharacter derived pawns"));
 
 	// Get ref to EnhancedInputComponent
