@@ -22,11 +22,7 @@ APaper_Wizard::APaper_Wizard()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
 
-	
-
 	isMoving = false;
-
-
 }
 
 
@@ -36,23 +32,23 @@ void APaper_Wizard::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetSprite()->SetFlipbook(RunLeft);
+	GetSprite()->SetRelativeScale3D(FVector(.3f, .3f, .3f));
+	GetSprite()->SetUsingAbsoluteRotation(true);
+	GetSprite()->SetFlipbook(Flipbooks.IdleRight);
+	OnCharacterMovementUpdated.AddDynamic(this, &APaper_Wizard::Animate);
 }
 
 
-void APaper_Wizard::SetCurrentAnimationDirection(const FVector& Velocity)
+void APaper_Wizard::SetCurrentAnimationDirection(FVector const& Velocity)
 {
-	FVector Forward = GetActorForwardVector().GetSafeNormal();
-	FVector Right = GetActorRightVector().GetSafeNormal();
+	const float x = GetVelocity().GetSafeNormal().X;
+	const float y = GetVelocity().GetSafeNormal().Y;
 
-	const float ForwardSpeed = FMath::Floor(FVector::DotProduct(Velocity.GetSafeNormal(), Forward) * 100) / 100;
-	const float RightSpeed = FMath::Floor(FVector::DotProduct(Velocity.GetSafeNormal(), Right) * 100) / 100;
-
-	isMoving = ForwardSpeed != 0.0f || RightSpeed != 0.0f;
+	isMoving = x != 0.0f || y != 0.0f;
 
 	if (isMoving)
 	{
-		if (ForwardSpeed > 0.0f && (RightSpeed < 0.0f || RightSpeed == 0.0f))
+		if (x > 0.0f)
 		{
 			CurrentAnimationDirection = EAnimationDirection::Right;
 		}
@@ -127,7 +123,6 @@ void APaper_Wizard::Tick(float DeltaTime)
 void APaper_Wizard::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 int APaper_Wizard::GetHealth()

@@ -68,9 +68,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
 	TSubclassOf<class AProjectileActor> FireballClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Magic")
-	int ProjectileOffset;
-
 	// Camera
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	USpringArmComponent* CameraArm = nullptr;
@@ -85,13 +82,10 @@ protected:
 	FAnimationFlipbooks Flipbooks;
 
 	UFUNCTION(BluePrintCallable, Category = "Player|Animation")
-	void SetCurrentAnimationDirection(const FVector& Velocity);
+	void SetCurrentAnimationDirection(FVector const& Velocity);
 
 	UFUNCTION(BlueprintCallable, Category = "Player|Animation")
 	void Animate(float DeltaTime, FVector OldLocation, FVector OldVelocity);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UPaperFlipbook* RunLeft;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Animation|Config")
 	bool isMoving;
@@ -151,6 +145,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player|Magic")
 	void SpellFireball();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Magic")
+	int ProjectileOffset;
+
 private:
 
 	// Health
@@ -176,7 +173,7 @@ private:
 	float CurrentFireballCharge = StartingFireballCharge;
 
 	// Projectile Helper
-	void FireProjectile(TSubclassOf<class AProjectileActor> Projectile, int Offset);
+	void FireProjectile(TSubclassOf<class AProjectileActor> ProjectileClass, int Offset);
 
 	GENERATED_BODY()
 };
