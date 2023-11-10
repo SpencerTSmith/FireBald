@@ -21,6 +21,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Collision")
+	USphereComponent* CollisionComponent;
+	UPROPERTY(BlueprintReadWrite, Category = "Projectile")
+	UProjectileMovementComponent* ProjectileMovementComponent;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -29,8 +34,5 @@ public:
 
 private:
 
-	UPROPERTY(VisibleAnywhere, Category = Projectile)
-	USphereComponent* CollisionComponent;
-	UPROPERTY(VisibleAnywhere, Category = Projectile)
-	UProjectileMovementComponent* ProjectileMovementComponent;
+	
 };
