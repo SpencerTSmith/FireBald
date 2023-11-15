@@ -21,9 +21,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Collision")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Collision")
 	USphereComponent* CollisionComponent;
-	UPROPERTY(BlueprintReadWrite, Category = "Projectile")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	UProjectileMovementComponent* ProjectileMovementComponent;
 
 public:	

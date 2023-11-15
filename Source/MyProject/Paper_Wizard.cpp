@@ -23,6 +23,7 @@ APaper_Wizard::APaper_Wizard()
 	Camera->SetupAttachment(CameraArm);
 
 	isMoving = false;
+	AttackGate = true;
 }
 
 
@@ -61,6 +62,10 @@ void APaper_Wizard::SetCurrentAnimationDirection(FVector const& Velocity)
 
 void APaper_Wizard::Animate(float DeltaTime, FVector OldLocation, FVector OldVelocity)
 {
+	// Don't animate other stuff
+	if (!AttackGate)
+		return;
+
 	SetCurrentAnimationDirection(OldVelocity);
 
 	if (isMoving)
@@ -175,10 +180,56 @@ float APaper_Wizard::GetStaminaRestorationFactor()
 
 void APaper_Wizard::AttackSword()
 {
-	if (CurrentStamina >= SwordStaminaCost)
+	if (CurrentStamina >= SwordStaminaCost && AttackGate)
 	{
-		FireProjectile(SwordClass, SwordOffset);
+		// Actual attack collision
+		if (SwordClass)
+		{
+			FVector PlayerLocation = GetActorLocation();
+			FRotator Rotation;
+			if (CurrentAnimationDirection == EAnimationDirection::Right)
+				Rotation = FRotator(0, 360, 0);
+			else
+				Rotation = FRotator(0, 180, 0);
+
+			// Get a location with offset to spawn at
+			FVector SpawnLocation = PlayerLocation + (Rotation.Vector() * SwordOffset);
+
+			UWorld* World = GetWorld();
+			if (World)
+			{
+				FActorSpawnParameters SpawnParams;
+				SpawnParams.Owner = this;
+				SpawnParams.Instigator = GetInstigator();
+
+				AProjectileActor* Sword = World->SpawnActor<AProjectileActor>(SwordClass, SpawnLocation, Rotation, SpawnParams);
+				if (Sword)
+				{
+					Sword->FireInDirection(Rotation.Vector());
+				}
+			}
+		}
+
+		// Animate it
+		switch (CurrentAnimationDirection)
+		{
+		case EAnimationDirection::Left:
+			GetSprite()->SetFlipbook(Flipbooks.AttackLeft);
+			break;
+		case EAnimationDirection::Right:
+			GetSprite()->SetFlipbook(Flipbooks.AttackRight);
+			break;
+		}
+
 		CurrentStamina -= SwordStaminaCost;
+		
+		AttackGate = false;
+		GetWorldTimerManager().SetTimer(AttackTimer,
+			[this]()->void
+			{
+				AttackGate = true;
+				GetSprite()->SetRelativeLocation(FVector::ZeroVector);
+			}, 0.2f, false);
 	}
 }
 
@@ -197,6 +248,28 @@ void APaper_Wizard::SpellStun()
 	if (CurrentStamina >= StunStaminaCost)
 	{
 		FireProjectile(StunClass, ProjectileOffset);
+
+		// animate it
+		switch (CurrentAnimationDirection)
+		{
+		case EAnimationDirection::Left:
+			GetSprite()->SetFlipbook(Flipbooks.StunLeft);
+			break;
+		case EAnimationDirection::Right:
+			GetSprite()->SetFlipbook(Flipbooks.StunRight);
+			break;
+		}
+
+		CurrentStamina -= SwordStaminaCost;
+
+		AttackGate = false;
+		GetWorldTimerManager().SetTimer(AttackTimer,
+			[this]()->void
+			{
+				AttackGate = true;
+				GetSprite()->SetRelativeLocation(FVector::ZeroVector);
+			}, 0.2f, false);
+
 		CurrentStamina -= StunStaminaCost;
 	}
 
@@ -205,9 +278,10 @@ void APaper_Wizard::SpellStun()
 void APaper_Wizard::SpellFireball()
 {
 	// Can't move while charging
-	if (CurrentFireballCharge < MaxFireballCharge && GetVelocity() == FVector(0))
+	if (CurrentFireballCharge < MaxFireballCharge && !isMoving)
 	{
 		const float OldFireballCharge = CurrentFireballCharge;
+		
 
 		CurrentFireballCharge = FMath::Clamp(CurrentFireballCharge + DeltaFireballCharge, 0, MaxFireballCharge);
 		OnStaminaChanged.Broadcast(OldFireballCharge, CurrentFireballCharge, MaxFireballCharge);

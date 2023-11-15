@@ -43,6 +43,17 @@ struct FAnimationFlipbooks
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UPaperFlipbook* RunLeft{ nullptr };
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* AttackRight{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* AttackLeft{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* StunRight{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* StunLeft{ nullptr };
 };
 
 /**
@@ -158,7 +169,7 @@ private:
 	// Stamina
 	static constexpr float BaseStamina = 20.0f;
 	static constexpr float BlinkStaminaCost = 1.0f;
-	static constexpr float SwordStaminaCost = 5.0f;
+	static constexpr float SwordStaminaCost = 3.0f;
 	static constexpr float FireballStaminaCost = 20.0f;
 	static constexpr float StunStaminaCost = 10.0f;
 	float MaxStamina = BaseStamina;
@@ -174,6 +185,9 @@ private:
 
 	// Projectile Helper
 	void FireProjectile(TSubclassOf<class AProjectileActor> ProjectileClass, int Offset);
+
+	FTimerHandle AttackTimer;
+	bool AttackGate;
 
 	GENERATED_BODY()
 };
