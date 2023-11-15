@@ -202,7 +202,7 @@ void APaper_Wizard::AttackSword()
 				SpawnParams.Owner = this;
 				SpawnParams.Instigator = GetInstigator();
 
-				AProjectileActor* Sword = World->SpawnActor<AProjectileActor>(SwordClass, SpawnLocation, Rotation, SpawnParams);
+				AProjectileActor* Sword = World->SpawnActor<AProjectileActor>(SwordClass, SpawnLocation, FRotator::ZeroRotator, SpawnParams);
 				if (Sword)
 				{
 					Sword->FireInDirection(Rotation.Vector());
