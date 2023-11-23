@@ -62,7 +62,7 @@ void APaper_Wizard::SetCurrentAnimationDirection(FVector const& Velocity)
 
 void APaper_Wizard::Animate(float DeltaTime, FVector OldLocation, FVector OldVelocity)
 {
-	// Don't animate other stuff
+	// Don't animate other stuff if attacking
 	if (!AttackGate)
 		return;
 
