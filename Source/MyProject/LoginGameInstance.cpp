@@ -21,9 +21,8 @@ void ULoginGameInstance::LoginWithEOS(FString ID, FString Token, FString LoginTy
 			AccountDetails.Token = Token;
 			AccountDetails.Type = LoginType;
 
-			IdentityPointer->OnLoginCompleteDelegates->AddUObject(this, &ULoginGameInstance::LoginWithEOS_Return);
-
 			IdentityPointer->Login(0, AccountDetails);
+			IdentityPointer->OnLoginCompleteDelegates->AddUObject(this, &ULoginGameInstance::LoginWithEOS_Return);
 		}
 	}
 }
