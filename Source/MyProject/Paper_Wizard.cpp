@@ -159,7 +159,7 @@ void APaper_Wizard::UpdateHealth(int DeltaHealth)
 
 	if (CurrentHealth <= 0.0f)
 	{
-		// Death screen
+		Destroy();
 	}
 }
 
