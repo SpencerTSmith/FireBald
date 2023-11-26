@@ -8,7 +8,7 @@
 .download-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: grey;
+    background-color: rgb(255, 0, 0);
     color: black;
     text-decoration: none;
     border-radius: 5px;
@@ -17,7 +17,8 @@
 
 .header {
     display: flex;
-    background-color: beige;
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 115, 0);
     justify-content: center;
 }
 
@@ -26,11 +27,13 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    cursor: url(./media/goblin_cursor.png), auto;
 }
 
 .main-content {
     flex: 1;  /* This allows the content to expand and push the footer down */
-    background-color: darkcyan; /* to see where main-content is*/
+    background-image: url(./media/mushroom_cloud.gif);
+    background-color: rgb(43, 0, 0);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,7 +59,7 @@ html, body {
 .footer {
     width: 100%;
     text-align: center;
-    background-color: darkgray;
+    background-color: rgb(0, 0, 0);
 }
 
 a, a:visited {
