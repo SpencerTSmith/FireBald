@@ -30,7 +30,7 @@ html, body {
 
 .main-content {
     flex: 1;  /* This allows the content to expand and push the footer down */
-    background-color: darkcyan; /* to see where main-content is*/
+    background-image: url('./media/HIM.png');
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,6 +48,11 @@ html, body {
 .game-description {
     max-width: 40vh;
     padding: 1vw;
+}
+.game-details {
+    background-color: #4c4e52e0;
+    border-radius: 12px;
+    padding: 0px 50px;
 }
 
 .container video {
