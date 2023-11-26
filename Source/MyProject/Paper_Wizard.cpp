@@ -42,6 +42,7 @@ void APaper_Wizard::BeginPlay()
 	GetSprite()->SetUsingAbsoluteRotation(true);
 	GetSprite()->SetFlipbook(Flipbooks.IdleRight);
 	OnCharacterMovementUpdated.AddDynamic(this, &APaper_Wizard::Animate);
+	BroadcastCurrentStats();
 }
 
 
@@ -121,12 +122,6 @@ void APaper_Wizard::Tick(float DeltaTime)
 		CurrentFireballCharge = FMath::Clamp(CurrentFireballCharge - FireballChargeDecay, 0, MaxFireballCharge);
 		OnFireballChargeChanged.Broadcast(OldFireballCharge, CurrentFireballCharge, MaxFireballCharge);
 	}
-
-	// Update temp UI
-	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Red, *(FString::Printf(TEXT("Health - Current: %d | Max: %d"), CurrentHealth, MaxHealth)));
-	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Green, *(FString::Printf(TEXT("Stamina - Current: %f | Max: %f"), CurrentStamina, MaxStamina)));
-	GEngine->AddOnScreenDebugMessage(-1, 0.49f, FColor::Orange, *(FString::Printf(TEXT("Charge - Current: %f | Max: %f"), CurrentFireballCharge, MaxFireballCharge)));
-
 }
 
 // Called to bind functionality to input
@@ -339,6 +334,13 @@ void APaper_Wizard::SpellFireball()
 		CurrentStamina -= FireballStaminaCost;
 		CurrentFireballCharge = 0.0f;
 	}
+}
+
+void APaper_Wizard::BroadcastCurrentStats()
+{
+	OnHealthChanged.Broadcast(CurrentHealth, CurrentHealth, MaxHealth);
+	OnStaminaChanged.Broadcast(CurrentStamina, CurrentStamina, MaxStamina);
+	OnFireballChargeChanged.Broadcast(CurrentFireballCharge, CurrentFireballCharge, MaxFireballCharge);
 }
 
 UCameraComponent* APaper_Wizard::GetCameraComponent()

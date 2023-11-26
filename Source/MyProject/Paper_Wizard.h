@@ -175,6 +175,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Magic")
 	int ProjectileOffset;
 
+	UFUNCTION(BlueprintCallable, Category = "Player|Stats")
+	void BroadcastCurrentStats();
+
 private:
 
 	// Health
