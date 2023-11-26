@@ -21,7 +21,11 @@
     color: black;
     text-decoration: none;
     border-radius: 5px;
-    cursor: pointer;
+    cursor: url(./media/goblin_cursor.png), auto;
+}
+
+.download-button:active {
+    cursor: url(./media//goblin_cursor_click.png), auto;
 }
 
 .header {
@@ -39,6 +43,10 @@ html, body {
     display: flex;
     flex-direction: column;
     cursor: url(./media/goblin_cursor.png), auto;
+}
+
+body:active {
+    cursor: url(./media/goblin_cursor_click.png), auto;
 }
 
 .main-content {
@@ -77,8 +85,17 @@ html, body {
     background-color: rgb(0, 0, 0);
 }
 
-a, a:visited {
+a {
     color: rgb(255, 0, 0);
+    cursor: url(./media/goblin_cursor.png), auto;
+}
+
+a:visited {
+    color:rgb(255, 115, 0);
+}
+
+a:active {
+    cursor: url(./media/goblin_cursor_click.png), auto;
 }
 
 marquee.scroll-text {
