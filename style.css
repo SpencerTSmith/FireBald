@@ -1,6 +1,15 @@
-* {
-    font-family: Arial, Helvetica, sans-serif;
+@font-face {
+    font-family: Gregorian;
+    src: url(./media//GregorianFLF.ttf);
+    font-family: Akzidenz-Grotesk;
+    src: url(./media//Akzidenz-grotesk-black.ttf);
 }
+@font-face {
+    font-family: Gregorian;
+    src: url(./media//GregorianFLF.ttf);
+}
+
+
 .body {
     display: flex;
 }
@@ -16,6 +25,8 @@
 }
 
 .header {
+    font-family: Gregorian;
+    font-size: xx-large;
     display: flex;
     background-color: rgb(0, 0, 0);
     color: rgb(255, 115, 0);
@@ -31,6 +42,7 @@ html, body {
 }
 
 .main-content {
+    font-family: Akzidenz-Grotesk;
     flex: 1;  /* This allows the content to expand and push the footer down */
     background-image: url(./media/mushroom_cloud.gif);
     background-color: rgb(43, 0, 0);
@@ -44,19 +56,22 @@ html, body {
     background-color: black;
     color: white;
     display: flex;
+    flex-direction: row;
     justify-content: space-evenly;
     padding: 10px
 }
 .game-description {
-    max-width: 40vh;
+    max-width: 30vh;
     padding: 1vw;
 }
 
 .container video {
-    max-width: 60vh; /* Adjust the max-width as needed */
+    max-width: 100vh; /* Adjust the max-width as needed */
 }
 
 .footer {
+    font-family:  Gregorian;
+    font-size: xx-large;
     width: 100%;
     text-align: center;
     background-color: rgb(0, 0, 0);
@@ -64,4 +79,14 @@ html, body {
 
 a, a:visited {
     color: rgb(255, 0, 0);
+}
+
+marquee.scroll-text {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 196, 0);
+    width: 50%;
+    border: 2px solid rgb(255, 255, 255);
+    display: flex;
+    border-radius: 1px;
+    overflow: hidden;
 }
