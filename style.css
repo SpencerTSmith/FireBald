@@ -34,7 +34,9 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
+    gap: 10px;
+    padding: 10px;
 }
 
 .container {
@@ -50,7 +52,7 @@ html, body {
     padding: 1vw;
 }
 .game-details {
-    background-color: #4c4e52e0;
+    background-color: #4c4e52ea;
     border-radius: 12px;
     padding: 0px 50px;
 }
@@ -62,9 +64,9 @@ html, body {
 .footer {
     width: 100%;
     text-align: center;
-    background-color: darkgray;
+    background-color: #2b2c2e;
 }
 
 a, a:visited {
-    color: rgb(255, 0, 0);
+    color: maroon;
 }
