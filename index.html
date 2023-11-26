@@ -1,18 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FireBald</title>
     <!-- Add CSS and other head elements here -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to the Game Download Site!</h1>
-    <form id="loginForm">
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button type="submit">Login</button>
-    </form>
-    <div id="downloadSection" style="display:none;">
-        <a href="link_to_your_game.zip" download>Download Game</a>
+    <div class="header">
+        <h1> FireBald</h1>
+    </div>
+    <div class="main-content">
+        <div class="container">
+            <video controls>
+                <source src="./media/test.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="game-description"> For gamers worldwide who need an epic game experience, the top-down game is a masterpiece that will deliver a fun experience </div>
+        </div>
+        <div class="download-section">
+            <a href="path_to_your_game.zip" class="download-button" download>Download</a>
+        </div>
+        
+    </div>
+    <div class="footer">
+        <h4 ><a class="github-link" href="https://github.com/SpencerTSmith/FireBald" target="_blank">GitHub</a></h4>
     </div>
     <!-- Add JavaScript at the end of the body -->
     <script src="script.js"></script>
