@@ -61,7 +61,6 @@ body::-webkit-scrollbar {
     font-family: Akzidenz-Grotesk;
     flex: 1;  /* This allows the content to expand and push the footer down */
     background-image: url(./media/mushroom_cloud.gif);
-    background-image: ;
     background-color: rgb(43, 0, 0);
     display: flex;
     flex-direction: column;
@@ -124,4 +123,18 @@ marquee.scroll-text {
     display: flex;
     border-radius: 1px;
     overflow: hidden;
+}
+
+li.cool-item {
+    animation: color-change 1s infinite;
+}
+
+@keyframes color-change {
+    0% { color: red; }
+    50% { color: yellow; }
+    100% { color: red; }
+}
+
+span.red-text {
+    color: red;
 }
