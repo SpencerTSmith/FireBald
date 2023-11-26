@@ -108,6 +108,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Animation")
 	FAnimationFlipbooks Flipbooks;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player|Animation")
+	FAnimationFlipbooks AltFlipbooks;
+
 	UFUNCTION(BlueprintCallable, Category = "Player|Animation")
 	void SetCurrentAnimationDirection(FVector const& Velocity);
 

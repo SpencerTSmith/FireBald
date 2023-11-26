@@ -331,6 +331,8 @@ void APaper_Wizard::SpellFireball()
 				GetSprite()->SetRelativeLocation(FVector::ZeroVector);
 			}, 0.2f, false);
 
+		Flipbooks = AltFlipbooks;
+
 		CurrentStamina -= FireballStaminaCost;
 		CurrentFireballCharge = 0.0f;
 	}
