@@ -7,7 +7,9 @@
 #include <Components/InputComponent.h>
 #include <EnhancedInputLibrary.h>
 #include "Paper_Wizard.h"
+#include "WizardHud.h"
 #include "MyPlayerController.generated.h"
+
 
 
 /**
@@ -40,6 +42,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Input|Character Movement")
 	UInputAction* Fireball = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Input|HUD")
+	UInputAction* CycleHUD = nullptr;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Input|Character Movement")
 	UInputMappingContext* InputMappingContext = nullptr;
 
@@ -60,6 +65,7 @@ protected:
 	void HandleStun();
 	void HandleFireball();
 	void HandleBlink();
+	void HandleCycleHUD();
 
 private:
 
@@ -68,7 +74,11 @@ private:
 	UEnhancedInputComponent* EnhancedInputComponent = nullptr;
 
 	//Store a ref to pawn we are controlling
+	UPROPERTY()
 	APaper_Wizard* PlayerCharacter = nullptr;
+
+	UPROPERTY()
+	AWizardHud* PlayerHud = nullptr;
 
 	GENERATED_BODY()
 };

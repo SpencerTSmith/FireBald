@@ -51,6 +51,8 @@ void AMyPlayerController::OnPossess(APawn* aPawn)
 		EnhancedInputComponent->BindAction(Fireball, ETriggerEvent::Triggered, this, &AMyPlayerController::HandleFireball);
 	if (Blink)
 		EnhancedInputComponent->BindAction(Blink, ETriggerEvent::Triggered, this, &AMyPlayerController::HandleBlink);
+	if (CycleHUD)
+		EnhancedInputComponent->BindAction(CycleHUD, ETriggerEvent::Triggered, this, &AMyPlayerController::HandleCycleHUD);
 
 	// Show cursor
 	this->bShowMouseCursor = true;
@@ -159,5 +161,12 @@ void AMyPlayerController::HandleBlink()
 {
 	if (PlayerCharacter) {
 		PlayerCharacter->SpellBlink ();
+	}
+}
+
+void AMyPlayerController::HandleCycleHUD()
+{
+	if (PlayerHud) {
+		PlayerHud->CycleToNextViewMode();
 	}
 }

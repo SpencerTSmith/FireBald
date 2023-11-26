@@ -9,6 +9,8 @@
 #include "GameFramework/Character.h"
 #include "PaperFlipBookComponent.h"
 #include "PaperFlipbook.h"
+#include "Components/AudioComponent.h"
+
 
 
 // Sets default values
@@ -21,6 +23,9 @@ APaper_Wizard::APaper_Wizard()
 	CameraArm->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm);
+
+	// Audio for charging sound initialization
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 
 	isMoving = false;
 	AttackGate = true;
@@ -281,15 +286,56 @@ void APaper_Wizard::SpellFireball()
 	if (CurrentFireballCharge < MaxFireballCharge && !isMoving)
 	{
 		const float OldFireballCharge = CurrentFireballCharge;
-		
+
+		AudioComponent->Play();
+
+		// animate it
+		switch (CurrentAnimationDirection)
+		{
+		case EAnimationDirection::Left:
+			GetSprite()->SetFlipbook(Flipbooks.ChargeLeft);
+			break;
+		case EAnimationDirection::Right:
+			GetSprite()->SetFlipbook(Flipbooks.ChargeRight);
+			break;
+		}
+
+		AttackGate = false;
+		GetWorldTimerManager().SetTimer(AttackTimer,
+			[this]()->void
+			{
+				AttackGate = true;
+				GetSprite()->SetRelativeLocation(FVector::ZeroVector);
+			}, 0.2f, false);
 
 		CurrentFireballCharge = FMath::Clamp(CurrentFireballCharge + DeltaFireballCharge, 0, MaxFireballCharge);
 		OnStaminaChanged.Broadcast(OldFireballCharge, CurrentFireballCharge, MaxFireballCharge);
-
 	}
 	else if (CurrentStamina >= FireballStaminaCost && CurrentFireballCharge == MaxFireballCharge)
 	{
 		FireProjectile(FireballClass, ProjectileOffset);
+
+		// animate it
+		switch (CurrentAnimationDirection)
+		{
+		case EAnimationDirection::Left:
+			GetSprite()->SetFlipbook(Flipbooks.FireLeft);
+			break;
+		case EAnimationDirection::Right:
+			GetSprite()->SetFlipbook(Flipbooks.FireRight);
+			break;
+		}
+
+		CurrentStamina -= SwordStaminaCost;
+
+		AttackGate = false;
+		GetWorldTimerManager().SetTimer(AttackTimer,
+			[this]()->void
+			{
+				AttackGate = true;
+				GetSprite()->SetRelativeLocation(FVector::ZeroVector);
+			}, 0.2f, false);
+
 		CurrentStamina -= FireballStaminaCost;
 		CurrentFireballCharge = 0.0f;
 	}

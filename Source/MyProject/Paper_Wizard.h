@@ -54,6 +54,18 @@ struct FAnimationFlipbooks
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UPaperFlipbook* StunLeft{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* FireRight{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* FireLeft{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* ChargeRight{ nullptr };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperFlipbook* ChargeLeft{ nullptr };
 };
 
 /**
@@ -84,6 +96,10 @@ protected:
 	USpringArmComponent* CameraArm = nullptr;
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* Camera = nullptr;
+
+	// Charging Sound component
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	class UAudioComponent* AudioComponent;
 
 	// Animation
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player|Animation")
