@@ -21,11 +21,15 @@
     color: black;
     text-decoration: none;
     border-radius: 5px;
-    cursor: url(./media/goblin_cursor.png), auto;
+    cursor: url(./media/goblin_cursor2.png), auto;
+}
+
+.download-button:hover {
+    cursor: url(./media/goblin_cursor1.png), auto;
 }
 
 .download-button:active {
-    cursor: url(./media//goblin_cursor_click.png), auto;
+    cursor: url(./media/goblin_cursor3.png), auto;
 }
 
 .header {
@@ -42,17 +46,22 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    cursor: url(./media/goblin_cursor.png), auto;
+    cursor: url(./media/goblin_cursor2.png), auto;
 }
 
 body:active {
-    cursor: url(./media/goblin_cursor_click.png), auto;
+    cursor: url(./media/goblin_cursor3.png), auto;
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 .main-content {
     font-family: Akzidenz-Grotesk;
     flex: 1;  /* This allows the content to expand and push the footer down */
     background-image: url(./media/mushroom_cloud.gif);
+    background-image: ;
     background-color: rgb(43, 0, 0);
     display: flex;
     flex-direction: column;
@@ -83,19 +92,28 @@ body:active {
     width: 100%;
     text-align: center;
     background-color: rgb(0, 0, 0);
+    cursor: url(./media/goblin_cursor2.png);
+}
+
+.footer:active {
+    cursor: url(./media/goblin_cursor3.png);
 }
 
 a {
     color: rgb(255, 0, 0);
-    cursor: url(./media/goblin_cursor.png), auto;
+    cursor: url(./media/goblin_cursor2.png), auto;
+}
+
+a:hover{
+    cursor: url(./media/goblin_cursor1.png), auto;
+}
+
+a:active {
+    cursor: url(./media/goblin_cursor3.png), auto;
 }
 
 a:visited {
     color:rgb(255, 115, 0);
-}
-
-a:active {
-    cursor: url(./media/goblin_cursor_click.png), auto;
 }
 
 marquee.scroll-text {
