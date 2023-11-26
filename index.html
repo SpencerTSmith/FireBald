@@ -1,18 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FireBald</title>
     <!-- Add CSS and other head elements here -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to the Game Download Site!</h1>
-    <form id="loginForm">
+    <div class="header">
+        <h1> FireBald</h1>
+        <h4> <a href="https://github.com/SpencerTSmith/FireBald"> github</a> </h4>
+    </div>
+
+    <div class="video-container">
+         <video width="640" height="480" controls>
+            <source src="./media/test.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+         </video>
+    </div>
+    <!-- <form id="loginForm">
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
         <button type="submit">Login</button>
-    </form>
-    <div id="downloadSection" style="display:none;">
-        <a href="link_to_your_game.zip" download>Download Game</a>
+    </form> -->
+    <div class="download-section">
+        <a href="path_to_your_game.zip" class="download-button" download>Download</a>
     </div>
     <!-- Add JavaScript at the end of the body -->
     <script src="script.js"></script>
