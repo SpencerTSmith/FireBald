@@ -1,8 +1,8 @@
 * {
     font-family: Arial, Helvetica, sans-serif;
 }
-.body {
-    display: flex;
+body {
+    background-image: url('./media/HIM.png');
 }
 
 .download-button {
@@ -17,7 +17,7 @@
 
 .header {
     display: flex;
-    background-color: beige;
+    background-color: #2b2c2eef;
     justify-content: center;
 }
 
@@ -30,17 +30,15 @@ html, body {
 
 .main-content {
     flex: 1;  /* This allows the content to expand and push the footer down */
-    background-image: url('./media/HIM.png');
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: space-evenly; */
     gap: 10px;
     padding: 10px;
 }
 
 .container {
-    background-color: black;
+    background-color: #2b2c2eef;
     border-radius: 10px;
     color: white;
     display: flex;
@@ -52,7 +50,7 @@ html, body {
     padding: 1vw;
 }
 .game-details {
-    background-color: #4c4e52ea;
+    background-color: #2b2c2eef;
     border-radius: 12px;
     padding: 0px 50px;
 }
@@ -64,9 +62,9 @@ html, body {
 .footer {
     width: 100%;
     text-align: center;
-    background-color: #2b2c2e;
+    background-color: #2b2c2eef;
 }
 
-a, a:visited {
+.links, .links:visited {
     color: maroon;
 }
